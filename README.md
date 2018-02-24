@@ -1,2 +1,3 @@
 # rpin-bot
-RPiN Bot for Winter WonderHack 2018
+
+RPiN for [Winter WonderHack](http://winterwonderhack.org) 2018
