@@ -52,11 +52,16 @@ function format(input) {
     if (c == +c) {
       acc += c;
     } else {
-      expr.push(acc);
+      if (acc !== "") {
+        expr.push(acc);
+        acc = "";
+      }
       expr.push(c);
-      acc = "";
     }
   });
+
+  if (acc !== "")
+    expr.push(acc);
 
   return expr.join(" ");
 }
