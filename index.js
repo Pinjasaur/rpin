@@ -28,11 +28,15 @@ exec(`./camera.py ${uuid}`, (err, stdout, stderr) => {
     .documentTextDetection(`${__dirname}/captures/${uuid}.jpg`)
     .then(results => {
       const text = results[0].fullTextAnnotation;
+
       if (text && text.text)
         console.log(text.text);
+
       fs.writeFileSync(`${__dirname}/responses/${uuid}.json`, JSON.stringify(text, null, 2));
+
       const normalized = text.text.split("\n").map(n => normalize(n));
       normalized.forEach(n => console.log(n));
+
       const formatted  = normalized.map(f => format(f));
       formatted.forEach(f => console.log(f));
     })
@@ -41,8 +45,10 @@ exec(`./camera.py ${uuid}`, (err, stdout, stderr) => {
     });
 });
 
-const normalize = input => input.trim().replace(/[^\d+\-\/*%]/g, "");
+// Remove all non-digits or non-operators
+const normalize = input => input.replace(/[^\d+\-\/*%]/g, "");
 
+// Iterate over a normalized input to delimit based on operators/operands
 function format(input) {
   let chars = input.split(""),
       acc   = "",
