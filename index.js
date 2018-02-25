@@ -1,26 +1,33 @@
 #!/usr/bin/env node
 
-// Imports the Google Cloud client library
+// Modules
 const vision   = require("@google-cloud/vision");
 const uuidv4   = require("uuid/v4");
+const fs       = require("fs");
 const { exec } = require("child_process");
 
+// Variables
 const uuid     = uuidv4();
 
+console.log("UUID:", uuid);
+
+// Execute the Python to capture the image
 exec(`./camera.py ${uuid}`, (err, stdout, stderr) => {
   if (err) {
     console.error(`exec err: ${err}`);
     return;
   }
 
-  console.log("req");
   const client = new vision.ImageAnnotatorClient();
 
+  // Request text detection for the image
   client
-    .textDetection(`${__dirname}/captures/${uuid}.jpg`)
+    .documentTextDetection(`${__dirname}/captures/${uuid}.jpg`)
     .then(results => {
-      const texts = results[0].textAnnotations;
-      texts.forEach(text => console.log(text.description));
+      const text = results[0].fullTextAnnotation;
+      if (text && text.text)
+        console.log(text.text);
+      fs.writeFileSync(`${__dirname}/responses/${uuid}.json`, JSON.stringify(text, null, 2));
     })
     .catch(err => {
       console.error("ERROR:", err);
