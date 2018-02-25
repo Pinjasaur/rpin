@@ -9,6 +9,6 @@ pwd = os.getcwd()
 camera = PiCamera()
 
 camera.start_preview()
-sleep(2)
+sleep(4)
 camera.capture(pwd + "/captures/%s.jpg" % sys.argv[1])
 camera.stop_preview()

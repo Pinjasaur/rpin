@@ -1,0 +1,14 @@
+{
+  "name": "rpin",
+  "version": "1.0.0",
+  "description": "RPiN",
+  "main": "index.js",
+  "repository": "git@github.com:Pinjasaur/rpin.git",
+  "author": "Paul Esch-Laurent <p@uly.io>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@google-cloud/vision": "^0.15.2",
+    "uuid": "^3.2.1"
+  }
+}
