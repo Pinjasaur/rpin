@@ -8,9 +8,14 @@ const { exec } = require("child_process");
 
 // User Modules
 const rpn      = require("./lib/rpn");
+const util     = require("./lib/util");
+const { normalize,
+        format,
+        validate } = util;
 
 // Variables
 const uuid     = uuidv4();
+const client   = new vision.ImageAnnotatorClient();
 
 console.log("UUID:", uuid);
 
@@ -21,53 +26,34 @@ exec(`./camera.py ${uuid}`, (err, stdout, stderr) => {
     return;
   }
 
-  const client = new vision.ImageAnnotatorClient();
-
   // Request text detection for the image
   client
     .documentTextDetection(`${__dirname}/captures/${uuid}.jpg`)
     .then(results => {
-      const text = results[0].fullTextAnnotation;
+      const result = results[0].fullTextAnnotation;
 
-      if (text && text.text)
-        console.log(text.text);
+      if (result && result.text)
+        console.log(result.text);
 
-      fs.writeFileSync(`${__dirname}/responses/${uuid}.json`, JSON.stringify(text, null, 2));
+      fs.writeFileSync(`${__dirname}/responses/${uuid}.json`, JSON.stringify(result, null, 2));
 
-      const normalized = text.text.split("\n").map(n => normalize(n));
-      normalized.forEach(n => console.log(n));
+      const normalized = result.text.split("\n").map(n => normalize(n)).filter(n => n.trim() !== "");
+      //normalized.forEach(n => console.log(n));
+      console.log(normalized);
 
       const formatted  = normalized.map(f => format(f));
-      formatted.forEach(f => console.log(f));
+      //formatted.forEach(f => console.log(f));
+      console.log(formatted);
+
+      if (!validate(formatted)) {
+        console.error("Invalid RPN expression(s):", formatted.join(", "));
+      } else {
+        formatted.forEach(expr => {
+          console.log(rpn(expr));
+        })
+      }
     })
     .catch(err => {
       console.error("ERROR:", err);
     });
 });
-
-// Remove all non-digits or non-operators
-const normalize = input => input.replace(/[^\d+\-\/*%]/g, "");
-
-// Iterate over a normalized input to delimit based on operators/operands
-function format(input) {
-  let chars = input.split(""),
-      acc   = "",
-      expr  = [];
-
-  chars.forEach(c => {
-    if (c == +c) {
-      acc += c;
-    } else {
-      if (acc !== "") {
-        expr.push(acc);
-        acc = "";
-      }
-      expr.push(c);
-    }
-  });
-
-  if (acc !== "")
-    expr.push(acc);
-
-  return expr.join(" ");
-}
