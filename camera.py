@@ -3,14 +3,12 @@
 from picamera import PiCamera
 from time     import sleep
 
-import os
-import time
+import os, time, sys
 
 pwd = os.getcwd()
-timestamp = int(time.time())
 camera = PiCamera()
 
 camera.start_preview()
 sleep(2)
-camera.capture(pwd + "/captures/%s.jpg" % timestamp)
+camera.capture(pwd + "/captures/%s.jpg" % sys.argv[1])
 camera.stop_preview()
