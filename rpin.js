@@ -32,25 +32,28 @@ exec(`./camera.py ${uuid}`, (err, stdout, stderr) => {
     .then(results => {
       const result = results[0].fullTextAnnotation;
 
-      if (result && result.text)
+      if (result && result.text) {
         console.log(result.text);
 
-      fs.writeFileSync(`${__dirname}/responses/${uuid}.json`, JSON.stringify(result, null, 2));
+        fs.writeFileSync(`${__dirname}/responses/${uuid}.json`, JSON.stringify(result, null, 2));
 
-      const normalized = result.text.split("\n").map(n => normalize(n)).filter(n => n.trim() !== "");
-      //normalized.forEach(n => console.log(n));
-      console.log(normalized);
+        const normalized = result.text.split("\n").map(n => normalize(n)).filter(n => n.trim() !== "");
+        //normalized.forEach(n => console.log(n));
+        //console.log(normalized);
 
-      const formatted  = normalized.map(f => format(f));
-      //formatted.forEach(f => console.log(f));
-      console.log(formatted);
+        const formatted  = normalized.map(f => format(f));
+        //formatted.forEach(f => console.log(f));
+        //console.log(formatted);
 
-      if (!validate(formatted)) {
-        console.error("Invalid RPN expression(s):", formatted.join(", "));
+        if (!validate(formatted)) {
+          console.error("Invalid RPN expression(s):", formatted.join(", "));
+        } else {
+          formatted.forEach(expr => {
+            console.log(expr, "=", rpn(expr));
+          })
+        }
       } else {
-        formatted.forEach(expr => {
-          console.log(rpn(expr));
-        })
+        console.error("No detection!");
       }
     })
     .catch(err => {
