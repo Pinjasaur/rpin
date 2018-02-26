@@ -1,5 +1,15 @@
-# rpin
+# RPiN
 
 RPiN for [Winter WonderHack](http://winterwonderhack.org) 2018
 
-We &lt;3 code
+Capture an image of some arbitrary RPN equation/expression, send to Google Vision API, detect any text, parse the result, and evaluate the resulting RPN expression(s).
+
+RPiN = RPi + RPN
+
+## Demo
+
+<p align="center">
+  <img src="demo.gif" alt="Demo">
+</p>
+
+<sub>We &lt;3 code - <em>@kwakr</sub>
