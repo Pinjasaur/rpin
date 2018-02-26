@@ -1,4 +1,4 @@
-# RPiN
+# RPiN <img align="right" src="https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg">
 
 RPiN for [Winter WonderHack](http://winterwonderhack.org) 2018
 
