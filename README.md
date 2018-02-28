@@ -1,10 +1,10 @@
 # RPiN <img align="right" src="https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg">
 
-RPiN for [Winter WonderHack](http://winterwonderhack.org) 2018
+RPiN (RPi + [RPN][rpn]) for [Winter WonderHack](http://winterwonderhack.org) 2018
 
 Capture an image of some arbitrary [RPN][rpn] equation/expression, send to Google Vision API, detect any text, parse the result, and evaluate the resulting [RPN][rpn] expression(s).
 
-RPiN = RPi + [RPN][rpn]
+View it on [DevPost][devpost].
 
 ## Demo
 
@@ -15,3 +15,4 @@ RPiN = RPi + [RPN][rpn]
 <sub>We &lt;3 code - <em>@kwakr</sub>
 
 [rpn]: https://en.wikipedia.org/wiki/Reverse_Polish_notation
+[devpost]: https://devpost.com/software/rpin
